@@ -4,7 +4,30 @@ const localStorageKey = "boards";
 function get_form_data() {
 
     let boardtitle = document.getElementById("BoardTitle").value;
-    console.log(boardtitle);
+    // console.log(boardtitle);
+    boards = JSON.parse(localStorage.getItem(localStorageKey))
+    // console.log("checkkkkkkkkk",boards[i]);
+    
+
+    let all_title_list = boards.map((val)=>{
+        return [val.title]
+    })
+    // console.log('all_title_list',all_title_list)       // givas all title list 
+
+    for(i=0;i<all_title_list.length;i++){  
+    // JSON.stringify(boards);
+    // console.log('up',boards);
+    boards=all_title_list[i];
+    // console.log('down',boards);
+    // console.log('down',boardtitle);
+    if (boardtitle == boards[0]){
+        re_enter_data()
+        return;
+        // console.log("its done",boardtitle)
+    }
+    }
+    
+
     let boarddescriptions = document.getElementById("DescriptionsTextarea").value;
     
     let form_data = {
@@ -18,7 +41,7 @@ function get_form_data() {
 
         boardsarray.push(form_data);
         boardsarray = [...JSON.parse(localStorage.getItem(localStorageKey)),form_data];
-        console.log(boardsarray);   
+        // console.log(boardsarray);   
         localStorage.setItem(localStorageKey, JSON.stringify(boardsarray));
     }
     else{
@@ -33,8 +56,18 @@ function get_form_data() {
 card_to_display()
 
 
+function re_enter_data(){
+    $('#ModalPopup').modal('hide');
+    alert("we have same data ");
+    return false;
+}
+
+
+
+
 function card_to_display(){
     boards = JSON.parse(localStorage.getItem(localStorageKey))
+    // console.log('abcccccc',boards)
     output = " "
         for(i=0;i<boards.length;i++){           
             output += 
@@ -49,7 +82,7 @@ function card_to_display(){
   <div class="card-body">
     <h5 class="card-title"></h5>
     <p class="card-text">${boards[i]['descriptions']}</p>
-    <button id="edit-button">Edit</button>
+    <button id="${[i]}" onclick="editFunction(this)">Edit</button>
   
 </div>
 </div>
@@ -67,9 +100,45 @@ function card_to_display(){
 
 
 
+function editFunction(element){
+// console.log(element.id);                                                     // gives an id 
+index = JSON.parse(element.id);                                                    // gives an id 
+// console.log('indexxxxxxxxxx',typeof(index));
+boards = JSON.parse(localStorage.getItem("boards"))
+a = document.getElementById("BoardTitle").value = boards[index]['title']
+// console.log(a)
+b=document.getElementById("DescriptionsTextarea").value = boards[index]['descriptions']
+// id=document.getElementById('id').value = index;
+// console.log(id)
+// console.log(b);
+
+c = document.getElementById("idtoupdate").value = index
+// console.log(c);
+// checkingindex = boards.prototype.find(id)
+// console.log(checkingindex);
+$('#ModalPopup').modal('show');
 
 
 
+
+
+
+
+// for(i=0;i<boards.length;i++){
+//     if (boards[i].title == element.id ){
+
+//     }
+// }
+
+
+
+// let update_value = boards.map((val)=>{
+//     return [val.title ,val.descriptions] 
+// })
+// console.log(update_value)
+
+
+}
 
 
 
